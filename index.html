@@ -1,157 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,
-initial-scale=1,
-maximum-scale=1,
-user-scalable=no">
-
-<title>FlashMind</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Memory Challenge - Infinite</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
 </head>
-
 <body>
-
-
-<!-- ================= HOME SCREEN ================= -->
-
-<div id="home-screen">
-
-<h1 class="game-title">
-
-FLASHMIND
-
-</h1>
-
-<button id="play-btn" class="home-btn">
-
-▶ Play Game
-
-</button>
-
-
-<button id="help-btn" class="home-btn">
-
-❓ Instruction
-
-</button>
-
-</div>
-
-
-
-<!-- HELP POPUP -->
-
-<div id="help-popup">
-
-<div class="help-card">
-
-<h2>How To Play</h2>
-
-<ul>
-
-<li>Watch flashing colors carefully.</li>
-
-<li>Repeat same order.</li>
-
-<li>Each level adds new color.</li>
-
-<li>Wrong click → Game Over.</li>
-
-<li>Try to reach highest level.</li>
-
-</ul>
-
-<button id="close-help">
-
-Close
-
-</button>
-
-</div>
-
-</div>
-
-
-
-<!-- ================= GAME SCREEN ================= -->
-
-<div id="game-screen" style="display:none;">
-
-<h1 class="game-heading">
-
-
-</h1>
-
-
-<!-- COLOR GRID -->
-
-<div id="game-container">
-
-<div class="color-btn" id="green"></div>
-
-<div class="color-btn" id="red"></div>
-
-<div class="color-btn" id="yellow"></div>
-
-<div class="color-btn" id="blue"></div>
-
-<div class="color-btn" id="purple"></div>
-
-<div class="color-btn" id="orange"></div>
-
-<div class="color-btn" id="pink"></div>
-
-<div class="color-btn" id="cyan"></div>
-
-</div>
-
-
-
-<div id="game-status">
-
-<p>
-
-Current Sequence :
-
-<span id="sequence-display">-</span>
-
-</p>
-
-<p>
-
-Click Count :
-
-<span id="click-count">0</span>
-
-</p>
-
-<p>
-
-Game Status :
-
-<span id="status-text">
-
-Waiting...
-
-</span>
-
-</p>
-
-</div>
-
-<p id="level-message"></p>
-
-</div>
-
-<script src="script.js"></script>
-
+    <div class="bg-glow"></div>
+
+    <div id="home-screen">
+        <div class="logo-area">
+            <h1 class="game-title">
+                MEMORY<br><span>CHALLENGE</span>
+            </h1>
+            <p class="tagline">Infinite Training Mode</p>
+        </div>
+        
+        <div class="menu-actions">
+            <button id="play-btn" class="home-btn primary">▶ Start Training</button>
+            <button id="help-btn" class="home-btn secondary">❓ Instruction</button>
+        </div>
+    </div>
+
+    <div id="help-popup">
+        <div class="help-card glass">
+            <h2>How To Play</h2>
+            <ul>
+                <li>Watch the sequence of glowing tiles.</li>
+                <li>Tap tiles in the exact same order.</li>
+                <li><b>Infinite Chances:</b> There is no Game Over!</li>
+                <li>If you miss, the level will replay until you pass.</li>
+            </ul>
+            <button id="close-help">Got it!</button>
+        </div>
+    </div>
+
+    <div id="game-screen" style="display:none;">
+        <div class="game-header">
+            <h1 class="game-heading">MEMORY CHALLENGE</h1>
+            <div id="status-badge">Level <span id="status-text">0</span></div>
+        </div>
+        
+        <div class="game-main-content">
+            <div id="game-container">
+                <div class="color-btn" id="green"></div>
+                <div class="color-btn" id="red"></div>
+                <div class="color-btn" id="yellow"></div>
+                <div class="color-btn" id="blue"></div>
+                <div class="color-btn" id="purple"></div>
+                <div class="color-btn" id="orange"></div>
+                <div class="color-btn" id="pink"></div>
+                <div class="color-btn" id="cyan"></div>
+            </div>
+
+            <div id="game-info-panel" class="glass">
+                <div class="stat-row">
+                    <span>Current Goal:</span>
+                    <span id="sequence-display" class="highlight">Watching...</span>
+                </div>
+                <p id="level-message"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

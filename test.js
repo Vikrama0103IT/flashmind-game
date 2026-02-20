@@ -4,7 +4,7 @@ let userPattern = [];
 let level = 0;
 let score = 0; 
 
-// --- Audio Configuration ---
+// --- Manual Audio Configuration ---
 const bgMusic = new Audio('bg-music.mp3'); 
 bgMusic.loop = true;
 bgMusic.volume = 0.2;
@@ -23,39 +23,32 @@ function playSound(audio) {
 // --- UI Elements ---
 const homeScreen = document.getElementById("home-screen");
 const gameScreen = document.getElementById("game-screen");
+const helpPopup = document.getElementById("help-popup");
+
 const playBtn = document.getElementById("play-btn");
+const helpBtn = document.getElementById("help-btn");
+const closeHelp = document.getElementById("close-help");
+
 const statusText = document.getElementById("status-text");
 const sequenceDisplay = document.getElementById("sequence-display");
 const levelMessage = document.getElementById("level-message");
 
-// --- Multiplayer & Message Passing ---
+// --- Instruction / Help Logic ---
+helpBtn.onclick = () => {
+    helpPopup.style.display = "flex";
+};
 
-// Signal to parent that game is ready
-window.parent.postMessage({ type: "readyGame" }, "*");
-
-window.addEventListener("message", function (event) {
-    if (event.data && event.data.type === "parent-event") {
-        var command = event.data.payload.command;
-
-        if (command === "startGame") {
-            homeScreen.style.display = "none";
-            gameScreen.style.display = "flex";
-            bgMusic.play().catch(() => {});
-            startGame();
-        }
-        else if (command === "endGame") {
-            bgMusic.pause();
-            disableUserInput();
-        }
-    }
-});
-
-// Play button informs parent window
-playBtn.onclick = () => {
-    window.parent.postMessage({ type: "readyGame" }, "*");
+closeHelp.onclick = () => {
+    helpPopup.style.display = "none";
 };
 
 // --- Game Logic ---
+playBtn.onclick = () => {
+    homeScreen.style.display = "none";
+    gameScreen.style.display = "flex";
+    bgMusic.play().catch(() => {});
+    startGame();
+};
 
 function startGame() {
     level = 0;
@@ -86,7 +79,7 @@ function animateSequence() {
             setTimeout(() => {
                 enableUserInput();
                 sequenceDisplay.textContent = "Your Turn!";
-            }, 400);
+            }, 200);
             return;
         }
         
@@ -102,13 +95,14 @@ function flashButton(color) {
     playSound(sfx.tap);
 
     btn.classList.remove("active");
-    void btn.offsetWidth; // Force Reflow
+    void btn.offsetWidth; 
 
     requestAnimationFrame(() => {
         btn.classList.add("active");
+        
         setTimeout(() => {
             btn.classList.remove("active");
-        }, 250);
+        }, 200);
     });
 }
 
@@ -118,6 +112,7 @@ function enableUserInput() {
         if (el) {
             el.style.pointerEvents = "auto";
             el.onclick = handleClick;
+            el.style.cursor = "pointer";
         }
     });
 }
@@ -128,6 +123,7 @@ function disableUserInput() {
         if (el) {
             el.style.pointerEvents = "none";
             el.onclick = null;
+            el.style.cursor = "default";
         }
     });
 }
@@ -142,9 +138,8 @@ function handleClick(e) {
 function checkAnswer(index) {
     if (userPattern[index] === gamePattern[index]) {
         if (userPattern.length === gamePattern.length) {
-            // Update score and send to parent
             score += 10;
-            window.parent.postMessage({ type: 'updateBattleScore', score: score }, '*');
+            console.log("Current Score (Backend): " + score);
             
             disableUserInput();
             
@@ -170,7 +165,6 @@ function handleMistake() {
     showMessage("Try Again!", "#f1c40f");
     userPattern = []; 
     
-    // Endless Reset: Replay sequence
     setTimeout(() => {
         sequenceDisplay.textContent = "Watching...";
         animateSequence();
